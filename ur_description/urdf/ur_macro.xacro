@@ -301,7 +301,8 @@
            link/frame) to introduce the necessary rotation over Z (of pi rad).
       -->
       <!-- <origin xyz="0 0 0" rpy="0 0 ${pi}" /> -->
-      <origin xyz="0.135 0.0674839772410001 1.241072164125" rpy="${pi} 0 ${2*pi}" />
+      <!-- <origin xyz="0.135 0.0674839772410001 1.241072164125" rpy="${pi} 0 ${2*pi}" /> -->
+      <origin xyz="-0.135 0.0674839772410001 1.241072164125" rpy="${pi} 0 ${2*pi}" />
     </joint>
     <joint name="${tf_prefix}shoulder_pan_joint" type="revolute">
       <parent link="${tf_prefix}base_link_inertia" />

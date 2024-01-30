@@ -4,16 +4,18 @@
   <name>planner</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="vihaan.shah@uconn.edu">vihaan</maintainer>
+  <maintainer email="rtc2@todo.todo">rtc2</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>action_interfaces</depend>
-  <exec_depend>rclpy</exec_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>rclcpp</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
