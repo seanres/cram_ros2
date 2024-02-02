@@ -9,19 +9,32 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 add_executable(planner src/planner.cpp)
 target_include_directories(planner PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(planner PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  planner
-  "moveit_ros_planning_interface"
-  "rclcpp"
+    planner
+    rclcpp
+    "moveit_ros_planning_interface"
 )
 
-install(TARGETS planner
+add_executable(get_jacobian src/get_jacobian.cpp)
+target_include_directories(get_jacobian PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+  get_jacobian
+    rclcpp
+    "moveit_ros_planning_interface"
+    std_msgs
+)
+
+target_compile_features(planner PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+install(TARGETS planner get_jacobian
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

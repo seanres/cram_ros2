@@ -86,12 +86,13 @@ def get_robot_description_semantic():
         "robot_description_semantic": robot_description_semantic_content
     }
     return robot_description_semantic
-    
+
+
 def generate_launch_description():
-    # generate_common_hybrid_launch_description() returns a list of nodes to launch
     robot_description = get_robot_description()
     robot_description_semantic = get_robot_description_semantic()
-    demo_node = Node(
+
+    planner_node = Node(
         package="planner",
         executable="planner",
         name="planner",
@@ -102,4 +103,6 @@ def generate_launch_description():
         ],
     )
 
-    return launch.LaunchDescription([demo_node])
+    return launch.LaunchDescription([
+        planner_node,
+    ])

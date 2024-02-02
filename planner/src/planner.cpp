@@ -12,13 +12,15 @@ int main(int argc, char *argv[])
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
-  std::thread([&executor]() { executor.spin(); }).detach();
+  std::thread([&executor]()
+              { executor.spin(); })
+      .detach();
 
   using moveit::planning_interface::MoveGroupInterface;
   auto move_group_interface = MoveGroupInterface(node, "ur_manipulator");
 
   move_group_interface.setPlanningPipelineId("pilz_industrial_motion_planner");
-  move_group_interface.setPlannerId("PTP");
+  move_group_interface.setPlannerId("LIN");
 
   geometry_msgs::msg::PoseStamped start_pose = move_group_interface.getCurrentPose();
   geometry_msgs::msg::Pose target_pose = start_pose.pose;
@@ -32,8 +34,8 @@ int main(int argc, char *argv[])
   RCLCPP_INFO(logger, "Start Pose Orientation Z %f", start_pose.pose.orientation.z);
   RCLCPP_INFO(logger, "Start Pose Orientation W %f", start_pose.pose.orientation.w);
 
-bool move_forward = true; // Flag to determine the direction of movement
-  while (rclcpp::ok()) // Loop while ROS is running
+  bool move_forward = true; // Flag to determine the direction of movement
+  while (rclcpp::ok())      // Loop while ROS is running
   {
     if (move_forward)
     {
