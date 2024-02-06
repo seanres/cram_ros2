@@ -10,6 +10,19 @@ find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+set(msg_files
+  "msg/EndEffectorVelocity.msg"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  DEPENDENCIES std_msgs builtin_interfaces
+ )
+
+ament_export_dependencies(rosidl_default_runtime)
 
 add_executable(end_effector_velocity_publisher src/end_effector_velocity_publisher.cpp)
 target_include_directories(end_effector_velocity_publisher PUBLIC
@@ -34,6 +47,11 @@ ament_target_dependencies(
   "rclcpp"
   "std_msgs"
 )
+
+rosidl_get_typesupport_target(cpp_typesupport_target
+  ${PROJECT_NAME} rosidl_typesupport_cpp)
+
+target_link_libraries(end_effector_velocity_publisher "${cpp_typesupport_target}")
 
 install(TARGETS get_jacobian end_effector_velocity_publisher
   DESTINATION lib/${PROJECT_NAME})

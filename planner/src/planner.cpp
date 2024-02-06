@@ -22,6 +22,9 @@ int main(int argc, char *argv[])
   move_group_interface.setPlanningPipelineId("pilz_industrial_motion_planner");
   move_group_interface.setPlannerId("LIN");
 
+  move_group_interface.setMaxVelocityScalingFactor(1.0);
+  move_group_interface.setMaxAccelerationScalingFactor(1.0);
+
   geometry_msgs::msg::PoseStamped start_pose = move_group_interface.getCurrentPose();
   geometry_msgs::msg::Pose target_pose = start_pose.pose;
 
@@ -34,16 +37,16 @@ int main(int argc, char *argv[])
   RCLCPP_INFO(logger, "Start Pose Orientation Z %f", start_pose.pose.orientation.z);
   RCLCPP_INFO(logger, "Start Pose Orientation W %f", start_pose.pose.orientation.w);
 
-  bool move_forward = true; // Flag to determine the direction of movement
-  while (rclcpp::ok())      // Loop while ROS is running
+  bool move_forward = true;
+  while (rclcpp::ok())
   {
     if (move_forward)
     {
-      target_pose.position.x += 0.1; // Move forward
+      target_pose.position.x += 0.1;
     }
     else
     {
-      target_pose.position.x -= 0.1; // Move backward
+      target_pose.position.x -= 0.1;
     }
 
     move_group_interface.setPoseTarget(target_pose);
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
     else
     {
       RCLCPP_ERROR(logger, "Planning failed!");
-      break; // Exit loop if planning fails
+      break;
     }
   }
 
