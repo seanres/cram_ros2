@@ -92,28 +92,28 @@ def generate_launch_description():
     robot_description = get_robot_description()
     robot_description_semantic = get_robot_description_semantic()
 
-    planner_node = Node(
-        package="planner",
-        executable="planner",
-        name="planner",
+    end_effector_velocity_publisher_node = Node(
+        package="vitals",
+        executable="end_effector_velocity_publisher",
+        name="end_effector_velocity_publisher",
         output="screen",
         parameters=[
             robot_description,
-            robot_description_semantic,
+            robot_description_semantic
         ],
     )
 
-    # advanced_planner_node = Node(
-    #     package="planner",
-    #     executable="advanced_planner",
-    #     name="advanced_planner",
-    #     output="screen",
-    #     parameters=[
-    #         robot_description,
-    #         robot_description_semantic,
-    #     ],
-    # )
+    get_jacobian_node = Node(
+        package="vitals",
+        executable="get_jacobian",
+        name="get_jacobian",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic
+        ],
+    )
 
     return launch.LaunchDescription([
-        planner_node,
+        end_effector_velocity_publisher_node,
     ])

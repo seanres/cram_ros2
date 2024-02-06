@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(planner)
+project(vitals)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,30 +11,31 @@ find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(planner src/planner.cpp)
-target_include_directories(planner PUBLIC
+add_executable(end_effector_velocity_publisher src/end_effector_velocity_publisher.cpp)
+target_include_directories(end_effector_velocity_publisher PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+target_compile_features(end_effector_velocity_publisher PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-    planner
-    rclcpp
-    "moveit_ros_planning_interface"
+  end_effector_velocity_publisher
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "std_msgs"
 )
 
-# add_executable(advanced_planner src/advanced_planner.cpp)
-# target_include_directories(advanced_planner PUBLIC
-#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#   $<INSTALL_INTERFACE:include>)
-# ament_target_dependencies(
-#   advanced_planner
-#     rclcpp
-#     "moveit_ros_planning_interface"
-#     std_msgs
-# )
+add_executable(get_jacobian src/get_jacobian.cpp)
+target_include_directories(get_jacobian PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(get_jacobian PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  get_jacobian
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "std_msgs"
+)
 
-target_compile_features(planner PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-
-install(TARGETS planner
+install(TARGETS get_jacobian end_effector_velocity_publisher
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

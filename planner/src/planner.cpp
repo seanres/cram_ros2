@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
   {
     if (move_forward)
     {
-      target_pose.position.x += 0.05; // Move forward
+      target_pose.position.x += 0.1; // Move forward
     }
     else
     {
-      target_pose.position.x -= 0.05; // Move backward
+      target_pose.position.x -= 0.1; // Move backward
     }
 
     move_group_interface.setPoseTarget(target_pose);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     if (success)
     {
       move_group_interface.execute(plan);
-      move_forward = !move_forward; // Change direction after each move
+      move_forward = !move_forward;
     }
     else
     {

@@ -1,0 +1,5 @@
+https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver/issues/301
+
+this is helpful!
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur3 robot_ip:=192.168.0.101 initial_joint_controller:=joint_trajectory_controller use_fake_hardware:=true launch_rviz:=false
+^ this works

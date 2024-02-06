@@ -1,0 +1,5 @@
+# ArduinoCommand.srv
+
+string command   # Command to send to the Arduino
+---
+string response  # Response from the Arduino
