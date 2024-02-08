@@ -1,7 +1,30 @@
 #include <memory>
-
 #include <rclcpp/rclcpp.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
+
+bool move_to_pose(moveit::planning_interface::MoveGroupInterface &move_group_interface,
+                  geometry_msgs::msg::Pose target_pose,
+                  const rclcpp::Logger &logger)
+{
+  move_group_interface.setPoseTarget(target_pose);
+  auto const [success, plan] = [&move_group_interface]()
+  {
+    moveit::planning_interface::MoveGroupInterface::Plan msg;
+    auto const ok = static_cast<bool>(move_group_interface.plan(msg));
+    return std::make_pair(ok, msg);
+  }();
+
+  if (success)
+  {
+    move_group_interface.execute(plan);
+    return true;
+  }
+  else
+  {
+    RCLCPP_ERROR(logger, "Planning failed!");
+    return false;
+  }
+}
 
 int main(int argc, char *argv[])
 {
@@ -37,39 +60,90 @@ int main(int argc, char *argv[])
   RCLCPP_INFO(logger, "Start Pose Orientation Z %f", start_pose.pose.orientation.z);
   RCLCPP_INFO(logger, "Start Pose Orientation W %f", start_pose.pose.orientation.w);
 
-  bool move_forward = true;
-  while (rclcpp::ok())
+  bool success;
+
+  target_pose.position.x = 0.077657;
+  target_pose.position.y = 0.467640;
+  target_pose.position.z = 0.925300;
+  target_pose.orientation.x = 0;
+  target_pose.orientation.y = 1;
+  target_pose.orientation.z = 0;
+  target_pose.orientation.w = 0;
+
+  success = move_to_pose(move_group_interface, target_pose, logger);
+  if (!success)
+    return 1;
+
+  target_pose.position.z -= 0.03;
+  success = move_to_pose(move_group_interface, target_pose, logger);
+  if (!success)
+    return 1;
+
+  for (uint8_t i = 0; i < 5; i++)
   {
-    if (move_forward)
+    if (i % 2 == 0)
     {
-      target_pose.position.x += 0.1;
+      target_pose.position.x -= 0.16;
     }
     else
     {
-      target_pose.position.x -= 0.1;
+      target_pose.position.x += 0.16;
     }
+    success = move_to_pose(move_group_interface, target_pose, logger);
+    if (!success)
+      return 1;
 
-    move_group_interface.setPoseTarget(target_pose);
-
-    auto const [success, plan] = [&move_group_interface]
-    {
-      moveit::planning_interface::MoveGroupInterface::Plan msg;
-      auto const ok = static_cast<bool>(move_group_interface.plan(msg));
-      return std::make_pair(ok, msg);
-    }();
-
-    if (success)
-    {
-      move_group_interface.execute(plan);
-      move_forward = !move_forward;
-    }
-    else
-    {
-      RCLCPP_ERROR(logger, "Planning failed!");
-      break;
-    }
+    target_pose.position.y -= 0.004;
+    success = move_to_pose(move_group_interface, target_pose, logger);
+    if (!success)
+      return 1;
   }
+
+  target_pose.position.x = 0.077657;
+  target_pose.position.y = 0.467640;
+  target_pose.position.z = 0.925300;
+  target_pose.orientation.x = 0;
+  target_pose.orientation.y = 1;
+  target_pose.orientation.z = 0;
+  target_pose.orientation.w = 0;
+
+  success = move_to_pose(move_group_interface, target_pose, logger);
+  if (!success)
+    return 1;
 
   rclcpp::shutdown();
   return 0;
+
+  // bool move_forward = true;
+  // while (rclcpp::ok())
+  // {
+  //   if (move_forward)
+  //   {
+  //     target_pose.position.x += 0.16;
+  //   }
+  //   else
+  //   {
+  //     target_pose.position.x -= 0.16;
+  //   }
+
+  //   move_group_interface.setPoseTarget(target_pose);
+
+  //   auto const [success, plan] = [&move_group_interface]
+  //   {
+  //     moveit::planning_interface::MoveGroupInterface::Plan msg;
+  //     auto const ok = static_cast<bool>(move_group_interface.plan(msg));
+  //     return std::make_pair(ok, msg);
+  //   }();
+
+  //   if (success)
+  //   {
+  //     move_group_interface.execute(plan);
+  //     move_forward = !move_forward;
+  //   }
+  //   else
+  //   {
+  //     RCLCPP_ERROR(logger, "Planning failed!");
+  //     break;
+  //   }
+  // }
 }
