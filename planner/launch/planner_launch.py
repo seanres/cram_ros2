@@ -103,17 +103,17 @@ def generate_launch_description():
         ],
     )
 
-    # advanced_planner_node = Node(
-    #     package="planner",
-    #     executable="advanced_planner",
-    #     name="advanced_planner",
-    #     output="screen",
-    #     parameters=[
-    #         robot_description,
-    #         robot_description_semantic,
-    #     ],
-    # )
+    test_node = Node(
+        package="planner",
+        executable="test_sync",
+        name="test_sync",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+        ],
+    )
 
     return launch.LaunchDescription([
-        planner_node,
+        test_node,
     ])

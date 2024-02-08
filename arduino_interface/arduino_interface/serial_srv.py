@@ -17,13 +17,21 @@ class ArduinoInterface(Node):
             self.get_logger().info(f"Sending command to Arduino: {formatted_command}")
             self.ser.write(formatted_command.encode())
             
-            arduino_response = self.ser.readline().decode('UTF-8').strip()
-            response.response = arduino_response
+            full_response = ""
+            while True:
+                if self.ser.in_waiting > 0:
+                    line = self.ser.readline().decode('UTF-8').strip()
+                    full_response += line + "\n"
+                else:
+                    break  # Exit the loop if no more data is available
+            
+            response.response = full_response.strip()
             return response
         except Exception as e:
             self.get_logger().error(f"Failed to send command: {str(e)}")
             response.response = f"ERROR: {str(e)}"
             return response
+
     
     def shutdown(self):
         if self.ser:
@@ -36,7 +44,6 @@ def main(args=None):
     try:
         rclpy.spin(arduino_interface)
     except KeyboardInterrupt:
-        passt
         rclpy.shutdown()
 
 if __name__ == '__main__':

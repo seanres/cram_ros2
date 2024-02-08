@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(interfaces REQUIRED)
 
 add_executable(planner src/planner.cpp)
 target_include_directories(planner PUBLIC
@@ -17,6 +18,16 @@ target_include_directories(planner PUBLIC
   $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(
     planner
+    rclcpp
+    "moveit_ros_planning_interface"
+)
+
+add_executable(test_sync src/test_sync.cpp)
+target_include_directories(test_sync PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+    test_sync
     rclcpp
     "moveit_ros_planning_interface"
 )
@@ -32,9 +43,10 @@ ament_target_dependencies(
 #     std_msgs
 # )
 
-target_compile_features(planner PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+add_executable(client src/client.cpp)
+ament_target_dependencies(client rclcpp interfaces)
 
-install(TARGETS planner
+install(TARGETS planner test_sync client
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

@@ -113,37 +113,4 @@ int main(int argc, char *argv[])
 
   rclcpp::shutdown();
   return 0;
-
-  // bool move_forward = true;
-  // while (rclcpp::ok())
-  // {
-  //   if (move_forward)
-  //   {
-  //     target_pose.position.x += 0.16;
-  //   }
-  //   else
-  //   {
-  //     target_pose.position.x -= 0.16;
-  //   }
-
-  //   move_group_interface.setPoseTarget(target_pose);
-
-  //   auto const [success, plan] = [&move_group_interface]
-  //   {
-  //     moveit::planning_interface::MoveGroupInterface::Plan msg;
-  //     auto const ok = static_cast<bool>(move_group_interface.plan(msg));
-  //     return std::make_pair(ok, msg);
-  //   }();
-
-  //   if (success)
-  //   {
-  //     move_group_interface.execute(plan);
-  //     move_forward = !move_forward;
-  //   }
-  //   else
-  //   {
-  //     RCLCPP_ERROR(logger, "Planning failed!");
-  //     break;
-  //   }
-  // }
 }
