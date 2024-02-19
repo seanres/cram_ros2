@@ -29,6 +29,7 @@ target_include_directories(test_sync PUBLIC
 ament_target_dependencies(
     test_sync
     rclcpp
+    interfaces
     "moveit_ros_planning_interface"
 )
 

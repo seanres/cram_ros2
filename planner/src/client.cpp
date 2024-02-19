@@ -1,5 +1,5 @@
 #include "rclcpp/rclcpp.hpp"
-#include "interfaces/srv/arduino_command.hpp" // Adjust this include path to match your package structure
+#include "interfaces/srv/arduino_command.hpp"
 #include <memory>
 #include <string>
 #include <functional>
@@ -22,6 +22,7 @@ public:
       }
       RCLCPP_INFO(this->get_logger(), "Service not available, waiting again...");
     }
+
 
     auto request = std::make_shared<ArduinoCommand::Request>();
     request->command = command;

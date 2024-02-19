@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
   move_group_interface.setMaxAccelerationScalingFactor(1.0);
 
   geometry_msgs::msg::PoseStamped start_pose = move_group_interface.getCurrentPose();
-  geometry_msgs::msg::Pose target_pose = start_pose.pose;
+  // geometry_msgs::msg::Pose target_pose = start_pose.pose;
 
   RCLCPP_INFO(logger, "Planning frame: %s", move_group_interface.getPlanningFrame().c_str());
   RCLCPP_INFO(logger, "Start Pose Position    X %f", start_pose.pose.position.x);
@@ -60,56 +60,64 @@ int main(int argc, char *argv[])
   RCLCPP_INFO(logger, "Start Pose Orientation Z %f", start_pose.pose.orientation.z);
   RCLCPP_INFO(logger, "Start Pose Orientation W %f", start_pose.pose.orientation.w);
 
-  bool success;
+  // bool success;
 
-  target_pose.position.x = 0.077657;
-  target_pose.position.y = 0.467640;
-  target_pose.position.z = 0.925300;
-  target_pose.orientation.x = 0;
-  target_pose.orientation.y = 1;
-  target_pose.orientation.z = 0;
-  target_pose.orientation.w = 0;
+  // target_pose.position.x = -0.158841;
+  // target_pose.position.y = 0.464466;
+  // target_pose.position.z = 0.90000;
+  // target_pose.position.z += 0.03;
+  // target_pose.orientation.x = 0;
+  // target_pose.orientation.y = 1;
+  // target_pose.orientation.z = 0;
+  // target_pose.orientation.w = 0;
 
-  success = move_to_pose(move_group_interface, target_pose, logger);
-  if (!success)
-    return 1;
+  // success = move_to_pose(move_group_interface, target_pose, logger);
+  // if (!success)
+  //   return 1;
 
-  target_pose.position.z -= 0.03;
-  success = move_to_pose(move_group_interface, target_pose, logger);
-  if (!success)
-    return 1;
+  
+  // target_pose.position.z -= 0.03;
 
-  for (uint8_t i = 0; i < 5; i++)
-  {
-    if (i % 2 == 0)
-    {
-      target_pose.position.x -= 0.16;
-    }
-    else
-    {
-      target_pose.position.x += 0.16;
-    }
-    success = move_to_pose(move_group_interface, target_pose, logger);
-    if (!success)
-      return 1;
+  // success = move_to_pose(move_group_interface, target_pose, logger);
+  // if (!success)
+  //   return 1;
 
-    target_pose.position.y -= 0.004;
-    success = move_to_pose(move_group_interface, target_pose, logger);
-    if (!success)
-      return 1;
-  }
+  // target_pose.position.z -= 0.03;
+  // success = move_to_pose(move_group_interface, target_pose, logger);
+  // if (!success)
+  //   return 1;
 
-  target_pose.position.x = 0.077657;
-  target_pose.position.y = 0.467640;
-  target_pose.position.z = 0.925300;
-  target_pose.orientation.x = 0;
-  target_pose.orientation.y = 1;
-  target_pose.orientation.z = 0;
-  target_pose.orientation.w = 0;
+  // for (uint8_t i = 0; i < 5; i++)
+  // {
+  //   if (i % 2 == 0)
+  //   {
+  //     target_pose.position.x -= 0.16;
+  //   }
+  //   else
+  //   {
+  //     target_pose.position.x += 0.16;
+  //   }
+  //   success = move_to_pose(move_group_interface, target_pose, logger);
+  //   if (!success)
+  //     return 1;
 
-  success = move_to_pose(move_group_interface, target_pose, logger);
-  if (!success)
-    return 1;
+  //   target_pose.position.y -= 0.004;
+  //   success = move_to_pose(move_group_interface, target_pose, logger);
+  //   if (!success)
+  //     return 1;
+  // }
+
+  // target_pose.position.x = 0.077657;
+  // target_pose.position.y = 0.467640;
+  // target_pose.position.z = 0.925300;
+  // target_pose.orientation.x = 0;
+  // target_pose.orientation.y = 1;
+  // target_pose.orientation.z = 0;
+  // target_pose.orientation.w = 0;
+
+  // success = move_to_pose(move_group_interface, target_pose, logger);
+  // if (!success)
+  //   return 1;
 
   rclcpp::shutdown();
   return 0;
