@@ -84,12 +84,12 @@ mesh_files:
     visual:
       mesh:
         package: ur_description
-        path: meshes/ur3/visual/wrist3.dae
+        path: meshes/ur3/j6_link.STL
       material:
         name: "LightGrey"
         color: "0.7 0.7 0.7 1.0"
     collision:
       mesh:
         package: ur_description
-        path: meshes/ur3/collision/wrist3.stl
-    visual_offset: -0.082
+        path: meshes/ur3/j6_link.STL
+    visual_offset: -0.085
