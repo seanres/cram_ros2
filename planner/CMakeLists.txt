@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(interfaces REQUIRED)
+find_package(cram_interfaces REQUIRED)
 
 add_executable(planner src/planner.cpp)
 target_include_directories(planner PUBLIC
@@ -20,6 +20,7 @@ ament_target_dependencies(
     planner
     rclcpp
     "moveit_ros_planning_interface"
+    cram_interfaces
 )
 
 add_executable(test_sync src/test_sync.cpp)
@@ -29,8 +30,8 @@ target_include_directories(test_sync PUBLIC
 ament_target_dependencies(
     test_sync
     rclcpp
-    interfaces
     "moveit_ros_planning_interface"
+    cram_interfaces
 )
 
 # add_executable(advanced_planner src/advanced_planner.cpp)
@@ -45,7 +46,7 @@ ament_target_dependencies(
 # )
 
 add_executable(client src/client.cpp)
-ament_target_dependencies(client rclcpp interfaces)
+ament_target_dependencies(client rclcpp cram_interfaces)
 
 install(TARGETS planner test_sync client
   DESTINATION lib/${PROJECT_NAME})

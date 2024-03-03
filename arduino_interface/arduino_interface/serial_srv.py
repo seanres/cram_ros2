@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from interfaces.srv import ArduinoCommand
+from cram_interfaces.srv import ArduinoCommand
 import serial
 
 class ArduinoInterface(Node):
