@@ -168,7 +168,6 @@ def launch_setup(context, *args, **kwargs):
     if change_controllers == "true":
         controllers_yaml["scaled_joint_trajectory_controller"]["default"] = False
         controllers_yaml["joint_trajectory_controller"]["default"] = True
-        servo_yaml["command_out_topic"] = "/joint_trajectory_controller/joint_trajectory"
 
     moveit_controllers = {
         "moveit_simple_controller_manager": controllers_yaml,
@@ -261,7 +260,6 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "ur_type",
-            default_value="ur3",
             description="Type/series of used UR robot.",
             choices=["ur3", "ur3e", "ur5", "ur5e", "ur10", "ur10e", "ur16e", "ur20"],
         )
@@ -335,7 +333,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_sim_time",
-            default_value="true",
+            default_value="false",
             description="Make MoveIt to use simulation time. This is needed for the trajectory planing in simulation.",
         )
     )
