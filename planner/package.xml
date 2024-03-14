@@ -9,6 +9,11 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+
+  <build_depend>cram_interfaces</build_depend>
+  <build_export_depend>cram_interfaces</build_export_depend>
+  <exec_depend>cram_interfaces</exec_depend>
+  
   <depend>moveit_ros_planning_interface</depend>
   <depend>rclcpp</depend>
 
