@@ -62,12 +62,13 @@
     kinematics_parameters_file
     physical_parameters_file
     visual_parameters_file
+    generate_ros2_control_tag:=true
     transmission_hw_interface:=hardware_interface/PositionJointInterface
     safety_limits:=false
     safety_pos_margin:=0.15
     safety_k_position:=20
-    use_mock_hardware:=false
-    mock_sensor_commands:=false
+    use_fake_hardware:=false
+    fake_sensor_commands:=false
     sim_gazebo:=false
     sim_ignition:=false
     headless_mode:=false
@@ -90,7 +91,7 @@
     reverse_ip:=0.0.0.0
     script_command_port:=50004
     trajectory_port:=50003
-    non_blocking_read:=false
+    non_blocking_read:=true
     keep_alive_count:=2"
 
     >
@@ -104,63 +105,49 @@
       force_abs_paths="${sim_gazebo or sim_ignition}"/>
 
 
-    <!-- ros2 control include -->
-    <xacro:include filename="$(find ur_description)/urdf/ur.ros2_control.xacro" />
-    <!-- ros2 control instance -->
-    <xacro:ur_ros2_control
-      name="${name}"
-      use_mock_hardware="${use_mock_hardware}"
-      initial_positions="${initial_positions}"
-      mock_sensor_commands="${mock_sensor_commands}"
-      headless_mode="${headless_mode}"
-      sim_gazebo="${sim_gazebo}"
-      sim_ignition="${sim_ignition}"
-      script_filename="${script_filename}"
-      output_recipe_filename="${output_recipe_filename}"
-      input_recipe_filename="${input_recipe_filename}"
-      tf_prefix="${tf_prefix}"
-      hash_kinematics="${kinematics_hash}"
-      robot_ip="${robot_ip}"
-      use_tool_communication="${use_tool_communication}"
-      tool_voltage="${tool_voltage}"
-      tool_parity="${tool_parity}"
-      tool_baud_rate="${tool_baud_rate}"
-      tool_stop_bits="${tool_stop_bits}"
-      tool_rx_idle_chars="${tool_rx_idle_chars}"
-      tool_tx_idle_chars="${tool_tx_idle_chars}"
-      tool_device_name="${tool_device_name}"
-      tool_tcp_port="${tool_tcp_port}"
-      reverse_port="${reverse_port}"
-      script_sender_port="${script_sender_port}"
-      reverse_ip="${reverse_ip}"
-      script_command_port="${script_command_port}"
-      trajectory_port="${trajectory_port}"
-      non_blocking_read="${non_blocking_read}"
-      keep_alive_count="${keep_alive_count}"
-      />
+    <xacro:if value="${generate_ros2_control_tag}">
+      <!-- ros2 control include -->
+      <xacro:include filename="$(find ur_description)/urdf/ur.ros2_control.xacro" />
+      <!-- ros2 control instance -->
+      <xacro:ur_ros2_control
+        name="${name}"
+        use_fake_hardware="${use_fake_hardware}"
+        initial_positions="${initial_positions}"
+        fake_sensor_commands="${fake_sensor_commands}"
+        headless_mode="${headless_mode}"
+        sim_gazebo="${sim_gazebo}"
+        sim_ignition="${sim_ignition}"
+        script_filename="${script_filename}"
+        output_recipe_filename="${output_recipe_filename}"
+        input_recipe_filename="${input_recipe_filename}"
+        tf_prefix="${tf_prefix}"
+        hash_kinematics="${kinematics_hash}"
+        robot_ip="${robot_ip}"
+        use_tool_communication="${use_tool_communication}"
+        tool_voltage="${tool_voltage}"
+        tool_parity="${tool_parity}"
+        tool_baud_rate="${tool_baud_rate}"
+        tool_stop_bits="${tool_stop_bits}"
+        tool_rx_idle_chars="${tool_rx_idle_chars}"
+        tool_tx_idle_chars="${tool_tx_idle_chars}"
+        tool_device_name="${tool_device_name}"
+        tool_tcp_port="${tool_tcp_port}"
+        reverse_port="${reverse_port}"
+        script_sender_port="${script_sender_port}"
+        reverse_ip="${reverse_ip}"
+        script_command_port="${script_command_port}"
+        trajectory_port="${trajectory_port}"
+        non_blocking_read="${non_blocking_read}"
+        keep_alive_count="${keep_alive_count}"
+        />
+    </xacro:if>
 
     <!-- Add URDF transmission elements (for ros_control) -->
     <!--<xacro:ur_arm_transmission prefix="${prefix}" hw_interface="${transmission_hw_interface}" />-->
     <!-- Placeholder for ros2_control transmission which don't yet exist -->
 
     <!-- links -  main serial chain -->
-    <link name="${tf_prefix}base_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://ur_description/meshes/ur3/bench_simplified_corrected.stl"/>
-        </geometry>
-        <material name="blue">
-          <color rgba="${106/255} ${165/255} ${219/255} 1.0"/>        </material>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://ur_description/meshes/ur3/bench_simplified_corrected.stl"/>
-        </geometry>
-      </collision>
-    </link>
-
+    <link name="${tf_prefix}base_link"/>
     <link name="${tf_prefix}base_link_inertia">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
@@ -268,7 +255,7 @@
     <link name="${tf_prefix}wrist_3_link">
 	  <xacro:get_visual_params name="wrist_3" type="visual_offset"/>
       <visual>
-        <origin xyz="0 0 ${visual_params}" rpy="${pi} 0 ${pi}"/>
+        <origin xyz="0 0 ${visual_params}" rpy="${pi/2} 0 0"/>
         <geometry>
           <xacro:get_mesh name="wrist_3" type="visual"/>
         </geometry>
@@ -300,9 +287,7 @@
            Use the joint between 'base_link' and 'base_link_inertia' (a dummy
            link/frame) to introduce the necessary rotation over Z (of pi rad).
       -->
-      <!-- <origin xyz="0 0 0" rpy="0 0 ${pi}" /> -->
-      <!-- <origin xyz="0.135 0.0674839772410001 1.241072164125" rpy="${pi} 0 ${2*pi}" /> -->
-      <origin xyz="-0.135 0.0674839772410001 1.336622164125" rpy="${pi} 0 ${2*pi}" />
+      <origin xyz="0 0 0" rpy="0 0 ${pi}" />
     </joint>
     <joint name="${tf_prefix}shoulder_pan_joint" type="revolute">
       <parent link="${tf_prefix}base_link_inertia" />
