@@ -1,14 +1,14 @@
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
-#include "interfaces/srv/arduino_command.hpp"
+#include "cram_interfaces/srv/arduino_command.hpp"
 #include <memory>
 #include <string.h>
 #include <string>
 #include <functional>
 
 using namespace std::chrono_literals;
-using ArduinoCommand = interfaces::srv::ArduinoCommand;
+using ArduinoCommand = cram_interfaces::srv::ArduinoCommand;
 using std::placeholders::_1;
 
 class ArduinoCommandClient : public rclcpp::Node

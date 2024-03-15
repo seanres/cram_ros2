@@ -36,6 +36,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    print("whatsup bitchessss")
     declared_arguments = []
     # UR specific arguments
     declared_arguments.append(
@@ -127,6 +128,7 @@ def generate_launch_description():
             tf_prefix,
         ]
     )
+    # print(robot_description_content)
     robot_description = {"robot_description": robot_description_content}
 
     rviz_config_file = PathJoinSubstitution(
