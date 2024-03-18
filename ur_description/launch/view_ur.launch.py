@@ -36,7 +36,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    print("whatsup bitchessss")
     declared_arguments = []
     # UR specific arguments
     declared_arguments.append(
