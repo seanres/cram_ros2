@@ -1,4 +1,4 @@
-arm_0:
+left:
   controller_manager:
     ros__parameters:
       joint_state_broadcaster:
